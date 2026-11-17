@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PSOrvia Klangebirge</title>
+<style>
+:root{color-scheme:light dark;--bg:#f2f5f8;--fg:#14202b;--mut:#44566a;--ac:#2d5c86;--acf:#fff;--card:rgba(255,255,255,.74)}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0a121b;--fg:#e8eff6;--mut:#a3b4c5;--ac:#e8b878;--acf:#10161d;--card:rgba(10,18,27,.64)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a121b;--fg:#e8eff6;--mut:#a3b4c5;--ac:#e8b878;--acf:#10161d;--card:rgba(10,18,27,.64)}}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,sans-serif;min-height:100vh}
+main{max-width:44rem;margin:0 auto;padding:7vh 16px 2rem}
+h1{font-size:2.4rem;margin:0 0 .3rem;font-weight:600;letter-spacing:.01em}
+h2{font-size:1.1rem;margin:2rem 0 .4rem}
+p{margin:.4rem 0}
+.mut{color:var(--mut)}
+.bar{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin:1.4rem 0}
+button,select{font:inherit;font-size:1rem;padding:.55rem 1rem;border-radius:.6rem;border:1px solid var(--ac);background:var(--card);color:var(--fg);cursor:pointer}
+button.main{background:var(--ac);color:var(--acf);font-weight:600}
+button[aria-pressed="true"]{outline:2px solid var(--ac);outline-offset:1px}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+label{font-size:.9rem;color:var(--mut)}
+pre{background:var(--card);padding:.8rem 1rem;border-radius:.6rem;overflow-x:auto;font-size:.9rem}
+.src{margin-top:1rem;font-size:1rem}
+footer{max-width:44rem;margin:0 auto;padding:2rem 16px 3rem;font-size:.9rem;color:var(--mut)}
+a{color:var(--ac)}
+#res{font-size:.9rem;white-space:pre-wrap}
+.sl label{display:inline-flex;align-items:center;gap:.5em;font-size:15px}.sl input{accent-color:var(--ac);width:9em}.sl output{min-width:2.6em;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<klang-gebirge id="kg"></klang-gebirge>
+<main>
+<h1>PSOrvia Klangebirge</h1>
+<p class="mut">Audio-reactive mountain range for your website</p>
+<p>A calm landscape as page background. The spectrum shapes the mountains: bass becomes broad massifs, treble becomes narrow peaks. You fly through a valley; the music raises the mountains around you as they come towards you.</p>
+<p class="src"><a href="https://psorvia.io">PSOrvia &middot; psorvia.io</a></p>
+<div class="bar">
+<button id="mu" type="button" class="main">Play music</button>
+<label for="pal">Colors</label>
+<select id="pal"><option value="dusk">Dusk</option><option value="glacier">Glacier</option><option value="ember">Ember</option><option value="moss">Moss</option></select>
+<button id="th" type="button" aria-pressed="false">Dark</button>
+<button id="rm" type="button" aria-pressed="false">Still image</button>
+</div>
+<div class="bar sl">
+<label>Curves <input id="cu" type="range" min="0" max="2" step="0.1" value="1"> <output for="cu" id="cuo">1.0</output></label>
+<label>Hills <input id="hi" type="range" min="0" max="2" step="0.1" value="1"> <output for="hi" id="hio">1.0</output></label>
+<label>How often <input id="co" type="range" min="0.25" max="3" step="0.25" value="1"> <output for="co" id="coo">1.0</output></label>
+</div>
+<p class="mut">Press the button: the music shapes the mountains. Your own audio or video works the same way. &ldquo;Still image&rdquo; shows what visitors with reduced motion see.</p>
+<audio id="mus" preload="none" src="media/klangebirge-demo.mp3?v=7"></audio>
+<h2>Usage</h2>
+<pre>&lt;script src="klangebirge.js"&gt;&lt;/script&gt;
+&lt;klang-gebirge&gt;&lt;/klang-gebirge&gt;</pre>
+</main>
+<footer><p>Music: PSOrvia Klangebirge Demo Music by Petit Souris / psorvia.io, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Music played on PSOrvia plugins &ndash; <a href="https://psorvia.io">psorvia.io</a></p>
+<p>SPDX-License-Identifier: MIT &middot; Built for <a href="https://psorvia.io">psorvia.io</a>.</p><pre id="res" hidden></pre></footer>
+<script src="klangebirge.js"></script>
+<script>
+(function(){
+var q=new URLSearchParams(location.search), kg=document.getElementById('kg'), root=document.documentElement;
+var mu=document.getElementById('mu'), mus=document.getElementById('mus'), pal=document.getElementById('pal'), th=document.getElementById('th'), rm=document.getElementById('rm');
+var P={dusk:{a:'#3b5878',b:'#f0cfa0',c:'#5f86a6',la:'#587a96',lb:'#f4dcb8',lc:'#dbe7ef'},
+ glacier:{a:'#3a6a7a',b:'#e4f4f6',c:'#6fa8bc',la:'#4f8196',lb:'#f2fbfc',lc:'#dcecf1'},
+ ember:{a:'#6a3d46',b:'#ffc27a',c:'#a4647a',la:'#9b6670',lb:'#ffd9a8',lc:'#f0dbd8'},
+ moss:{a:'#3f5f4c',b:'#e8e0a8',c:'#7aa08a',la:'#5f8570',lb:'#f2eec0',lc:'#e0ece3'}};
+function colors(n){var p=P[n];kg.setAttribute('color-a',p.a);kg.setAttribute('color-b',p.b);kg.setAttribute('color-c',p.c);kg.setAttribute('color-a-light',p.la);kg.setAttribute('color-b-light',p.lb);kg.setAttribute('color-c-light',p.lc);}
+pal.addEventListener('change',function(){colors(pal.value);});
+colors('dusk');
+function setTheme(d){root.setAttribute('data-theme',d?'dark':'light');th.setAttribute('aria-pressed',d);th.textContent=d?'Light':'Dark';}
+th.addEventListener('click',function(){setTheme(th.getAttribute('aria-pressed')!=='true');});
+if(q.get('theme'))setTheme(q.get('theme')==='dark');
+if(q.get('pal')&&P[q.get('pal')]){pal.value=q.get('pal');colors(pal.value);}
+[['cu','curves'],['hi','hills'],['co','course']].forEach(function(a){var i=document.getElementById(a[0]),o=document.getElementById(a[0]+'o');i.addEventListener('input',function(){o.textContent=(+i.value).toFixed(i.step<0.2?1:2);kg.setAttribute(a[1],i.value);});});
+rm.addEventListener('click',function(){var on=rm.getAttribute('aria-pressed')!=='true';rm.setAttribute('aria-pressed',on);kg.setAttribute('motion',on?'off':'on');});
+mu.addEventListener('click',function(){if(!mus.paused){mus.pause();return;}mus.currentTime=0;mus.play().catch(function(){});});
+mus.addEventListener('play',function(){mu.textContent='Stop music';});
+['pause','ended'].forEach(function(e){mus.addEventListener(e,function(){mu.textContent='Play music';});});
+// Self-test (?selftest): errors, pixel count, result in #res
+if(q.has('selftest')){
+ var errs=[];window.addEventListener('error',function(e){errs.push(String(e.message));});
+ setTimeout(function(){
+  var r=document.getElementById('res');r.hidden=false;
+  var cv=kg.shadowRoot&&kg.shadowRoot.querySelector('canvas'), n=0;
+  if(q.has('sim'))kg.simulate(true);
+  kg.step(.05);
+  if(cv&&kg.gl){var c2=document.createElement('canvas');c2.width=cv.width;c2.height=cv.height;var x=c2.getContext('2d');x.drawImage(cv,0,0);var px=x.getImageData(0,0,c2.width,c2.height).data;for(var i=3;i<px.length;i+=4)if(px[i]>8)n++;}
+  r.textContent='webgl='+!!kg.gl+'\npixels='+n+'\nerrors='+errs.length+(errs.length?' '+errs.join(' | '):'')+'\nDONE';
+ },800);
+}
+})();
+</script>
+</body>
+</html>

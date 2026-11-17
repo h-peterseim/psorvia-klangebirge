@@ -1,0 +1,15 @@
+{
+  "name": "psorvia-klangebirge",
+  "version": "1.0.0",
+  "description": "Audio-reactive wireframe mountain range for your website. PSOrvia, psorvia.io",
+  "main": "klangebirge.js",
+  "module": "klangebirge.esm.js",
+  "browser": "klangebirge.js",
+  "files": ["klangebirge.js", "klangebirge.esm.js", "media/LICENSE.md", "docs/i18n"],
+  "scripts": { "build": "./build.sh" },
+  "keywords": ["web-component", "audio-reactive", "webgl", "background", "psorvia"],
+  "homepage": "https://h-peterseim.github.io/psorvia-klangebirge/demo.html",
+  "repository": { "type": "git", "url": "git+https://github.com/h-peterseim/psorvia-klangebirge.git" },
+  "license": "MIT",
+  "author": "Petit Souris <apps@petit-souris.de>"
+}
