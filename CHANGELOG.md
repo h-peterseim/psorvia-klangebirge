@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1 (proposed)
+- Two more README translations: Norwegian Bokmål (`nb`) and Turkish (`tr`).
+
 ## 1.0.0
 - First release: web component `<klang-gebirge>`, as ES module and classic script.
 - Audio-reactive wireframe mountain range: bass shapes broad massifs, treble narrow peaks; a flight through a valley.
