@@ -1,6 +1,6 @@
 {
   "name": "psorvia-klangebirge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Audio-reactive wireframe mountain range for your website. PSOrvia, psorvia.io",
   "main": "klangebirge.js",
   "module": "klangebirge.esm.js",

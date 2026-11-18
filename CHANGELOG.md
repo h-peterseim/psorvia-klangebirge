@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.1 (proposed)
+## 1.0.1
 - Two more README translations: Norwegian Bokmål (`nb`) and Turkish (`tr`).
 
 ## 1.0.0
